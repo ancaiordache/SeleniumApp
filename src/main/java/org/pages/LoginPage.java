@@ -7,6 +7,7 @@ public class LoginPage extends BasePage {
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
+        driver.get("https://ecommerce-playground.lambdatest.io/index.php?route=account/login");
     }
 
     private By emailInput = By.id("input-email");

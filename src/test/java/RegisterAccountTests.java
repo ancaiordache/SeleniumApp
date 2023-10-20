@@ -19,14 +19,14 @@ public class RegisterAccountTests {
     }
 
     @BeforeMethod
-    public void beforeMethod () {
+    public void beforeMethod() {
         System.out.println("Navigate to " + loginPageURL);
         driver.get("https://ecommerce-playground.lambdatest.io/index.php?route=account/register");
         registerAccountPage = new RegisterAccountPage(driver);
     }
 
     @Test
-    public void registerNewAccountMandatoryFieldsTest() throws Exception{
+    public void registerNewAccountMandatoryFieldsTest() {
         registerAccountPage.insertFirstName("John");
         registerAccountPage.insertLastName("Doe");
         registerAccountPage.insertEmail(generateRandomEmail());
@@ -41,33 +41,33 @@ public class RegisterAccountTests {
         Assert.assertEquals(actualText, expectedText, "Actual text is not the expected one.");
     }
 
-   @Test
-   public void registerWithoutPrivacyPolicyTest() {
-       registerAccountPage.insertFirstName("John");
-       registerAccountPage.insertLastName("Doe");
-       registerAccountPage.insertEmail(generateRandomEmail());
-       registerAccountPage.insertPhoneNumber("0040755829345");
-       registerAccountPage.setPassword("Password123");
-       registerAccountPage.setPasswordConfirm("Password123");
-       registerAccountPage.clickContinue();
-       String actualText = registerAccountPage.getErrorMessage();
-       String expectedText = "Warning: You must agree to the Privacy Policy!";
-       Assert.assertEquals(actualText, expectedText, "Error message is not the expected one");
-   }
+    @Test
+    public void registerWithoutPrivacyPolicyTest() {
+        registerAccountPage.insertFirstName("John");
+        registerAccountPage.insertLastName("Doe");
+        registerAccountPage.insertEmail(generateRandomEmail());
+        registerAccountPage.insertPhoneNumber("0040755829345");
+        registerAccountPage.setPassword("Password123");
+        registerAccountPage.setPasswordConfirm("Password123");
+        registerAccountPage.clickContinue();
+        String actualText = registerAccountPage.getErrorMessage();
+        String expectedText = "Warning: You must agree to the Privacy Policy!";
+        Assert.assertEquals(actualText, expectedText, "Error message is not the expected one");
+    }
 
-   @Test
-   public void registerAccountWithoutFirstNameTest() {
-       registerAccountPage.insertLastName("Doe");
-       registerAccountPage.insertEmail(generateRandomEmail());
-       registerAccountPage.insertPhoneNumber("0040755829345");
-       registerAccountPage.setPassword("Password123");
-       registerAccountPage.setPasswordConfirm("Password123");
-       registerAccountPage.checkPrivacyPolicy();
-       registerAccountPage.clickContinue();
-       String actualText = registerAccountPage.getFirstNameErrorMessage();
-       String expectedText = "First Name must be between 1 and 32 characters!";
-       Assert.assertEquals(actualText, expectedText, "Error message is not the expected one");
-   }
+    @Test
+    public void registerAccountWithoutFirstNameTest() {
+        registerAccountPage.insertLastName("Doe");
+        registerAccountPage.insertEmail(generateRandomEmail());
+        registerAccountPage.insertPhoneNumber("0040755829345");
+        registerAccountPage.setPassword("Password123");
+        registerAccountPage.setPasswordConfirm("Password123");
+        registerAccountPage.checkPrivacyPolicy();
+        registerAccountPage.clickContinue();
+        String actualText = registerAccountPage.getFirstNameErrorMessage();
+        String expectedText = "First Name must be between 1 and 32 characters!";
+        Assert.assertEquals(actualText, expectedText, "Error message is not the expected one");
+    }
 
     @Test
     public void registerAccountWithoutLastNameTest() {
@@ -96,6 +96,7 @@ public class RegisterAccountTests {
         String expectedText = "E-Mail Address does not appear to be valid!";
         Assert.assertEquals(actualText, expectedText, "Error message is not the expected one");
     }
+
     @Test
     public void registerAccountWithoutTelephoneTest() {
         registerAccountPage.insertFirstName("John");
@@ -123,6 +124,7 @@ public class RegisterAccountTests {
         String expectedText = "Password must be between 4 and 20 characters!";
         Assert.assertEquals(actualText, expectedText, "Error message is not the expected one");
     }
+
     @Test
     public void registerAccountWithoutPasswordConfirmTest() {
         registerAccountPage.insertFirstName("John");
@@ -136,8 +138,9 @@ public class RegisterAccountTests {
         String expectedText = "Password confirmation does not match password!";
         Assert.assertEquals(actualText, expectedText, "Error message is not the expected one");
     }
+
     @AfterTest
-    public void tearDown () {
+    public void tearDown() {
         driver.quit();
     }
 }
