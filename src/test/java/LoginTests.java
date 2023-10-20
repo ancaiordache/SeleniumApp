@@ -6,6 +6,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static util.TestUtil.generateRandomEmail;
+
 /**
  * Create a happy flow Login test.
  * 1. Create a page object LoginPage class with the locators and methods to interact with the elements.
@@ -18,36 +20,12 @@ import org.testng.annotations.Test;
  * Create negative tests for Login page.
  */
 
-public class LoginTests {
-    private WebDriver driver;
-
-    @BeforeClass
-    public void setUp() {
-        driver = new ChromeDriver();
-    }
-
-    @BeforeMethod
-    public void beforeMethod() {
-        driver.get("https://ecommerce-playground.lambdatest.io/index.php?route=account/login");
-    }
-
-    @Test
-    public void loginReturningCustomerTest() {
-        String actualUrl;
-        String expectedUrl;
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.insertEmail("anca12345670811@email.com");
-        loginPage.insertPassword("Password123");
-        loginPage.clickLoginButton();
-        actualUrl = driver.getCurrentUrl();
-        expectedUrl = "https://ecommerce-playground.lambdatest.io/index.php?route=account/account";
-        Assert.assertEquals(actualUrl, expectedUrl, "Url is not the expected one");
-    }
+public class LoginTests extends BaseTest {
 
     @Test
     public void invalidEmailFormatTest() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.insertEmail("anca1.com");
+        loginPage.insertEmail("@-+" + generateRandomEmail());
         loginPage.insertPassword("Password123");
         loginPage.clickLoginButton();
         String actualText = loginPage.getErrorMessage();
@@ -58,17 +36,18 @@ public class LoginTests {
     @Test
     public void loginWithoutEmail() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.insertPassword("Password123");
+        loginPage.insertPassword(generateRandomEmail());
         loginPage.clickLoginButton();
         String actualText = loginPage.getInsertEmailErrorMessage();
         String expectedText = "Warning: No match for E-Mail Address and/or Password.";
-        Assert.assertEquals(actualText, expectedText, "Error message is not the expected one");
+        String expectedTextTwo = "Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour.";
+        Assert.assertEquals(actualText, expectedTextTwo, "Error message is not the expected one");
     }
 
     @Test
     public void loginWithoutPassword() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.insertEmail("anca12345670811@email.com");
+        loginPage.insertEmail(generateRandomEmail());
         loginPage.clickLoginButton();
         String actualText = loginPage.getInsertPasswordErrorMessage();
         String expectedText = "Warning: No match for E-Mail Address and/or Password.";
