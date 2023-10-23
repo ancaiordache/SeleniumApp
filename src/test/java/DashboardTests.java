@@ -35,6 +35,14 @@ public class DashboardTests extends BaseTest {
     }
 
     @Test
+    public void goToHomePageByClickingLogo() {
+        dashboardPage.clickHomePageLogoButton();
+        String actualUrl = driver.getCurrentUrl();
+        String expectedUrl = "https://ecommerce-playground.lambdatest.io/index.php?route=common/home";
+        Assert.assertEquals(expectedUrl, actualUrl, "The home page url is not the expected one");
+    }
+
+    @Test
     public void verifyDashboardFirstSection() {
         String expectedFirstSectionHeaderText = "My Account";
         String expectedSecondSectionHeaderText = "My Orders";

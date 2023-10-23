@@ -1,3 +1,4 @@
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -17,6 +18,7 @@ public class WishlistFlowsTests extends BaseTest {
     private SearchResultsPage searchResultsPage;
     private Actions action;
     private String loginPageURL = "https://ecommerce-playground.lambdatest.io/index.php?route=account/register";
+    private String wishListPageURL = "https://ecommerce-playground.lambdatest.io/index.php?route=account/wishlist";
 
     @BeforeClass
     public void setUp() {
@@ -68,5 +70,36 @@ public class WishlistFlowsTests extends BaseTest {
         wishlistPage.clickRemoveItemFromWishlistButton();
         actualResult = wishlistPage.getNoResultsElementText();
         Assert.assertEquals(actualResult, expectedResult, "Text from element is not the expected one.");
+    }
+
+    @Test
+    public void removeItemFromWishlist() throws Exception {
+        String expectedResult = "No results!";
+        wishlistPage.clickWishlist();
+        String actualResult = wishlistPage.getNoResultsElementText();
+        Assert.assertEquals(actualResult, expectedResult, "Text from element is not the expected one.");
+        wishlistPage.enterTextSearch("iPod");
+        wishlistPage.clickSearchButton();
+        //Wait for items to load
+        Thread.sleep(1000);
+        WebElement item = searchResultsPage.getFirstItem();
+        action.moveToElement(item).build().perform();
+        //Wait for hoover element to be displayed
+        Thread.sleep(1000);
+        WebElement button = searchResultsPage.getAddToWishlistButton();
+        action.moveToElement(button).click().build().perform();
+        //Wait for popup to be displayed
+        Thread.sleep(1000);
+        searchResultsPage.clickClosePopupButton();
+        searchResultsPage.clickWishlist();
+        int noOfItems = wishlistPage.getWishlistItems().size();
+        Assert.assertTrue(noOfItems == 1, "Wishlist is empty");
+        wishlistPage.clickRemoveItemFromWishlistButton();
+        actualResult = wishlistPage.getNoResultsElementText();
+        Assert.assertEquals(actualResult, expectedResult, "Text from element is not the expected one.");
+        wishlistPage.deleteItemFromWishlist();
+        String expectedDeleteItemResult = "Success: You have modified your wish list!";
+        String actualDeleteItemResult = wishlistPage.successDeletedItem();
+        Assert.assertEquals(actualDeleteItemResult, expectedDeleteItemResult, "Text from element is not the expected one.");
     }
 }

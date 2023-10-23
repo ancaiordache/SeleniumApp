@@ -23,6 +23,7 @@ public class DashboardPage extends BasePage {
     private By orderTransactionsElement = By.xpath(".//div[@id='content']//a[contains(@href, 'account/transaction')]");
     private By orderRecurringPaymentsElement = By.xpath(".//div[@id='content']//a[contains(@href, 'account/recurring')]");
     private By orderRegisterAffiliateAccountElement = By.xpath(".//div[@id='content']//a[contains(@href, 'account/affiliate/add')]");
+    private By homePageLogoElement = By.xpath("//*[@id=\"entry_217821\"]/figure/a/img");
 
     public String getFirstSectionHeaderText() {
         return driver.findElement(firstSectionHeader).getText();
@@ -83,5 +84,9 @@ public class DashboardPage extends BasePage {
 
     public String getRegisterAffiliateAccountElement() {
         return driver.findElement(orderRegisterAffiliateAccountElement).getText();
+    }
+
+    public void clickHomePageLogoButton() {
+        driver.findElement(homePageLogoElement).click();
     }
 }
